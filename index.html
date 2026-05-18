@@ -360,6 +360,64 @@
     margin-top: 4px;
   }
 
+  .tab-btn {
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1px solid #e8d8c4;
+    background: transparent;
+    font-size: 13px;
+    color: #9c8b72;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .tab-btn.tab-active {
+    background: #b8956a;
+    border-color: #b8956a;
+    color: white;
+  }
+
+  .bulk-item {
+    background: #fdf8f2;
+    border: 1px solid #e8d8c4;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+  .bulk-thumb {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .bulk-fields {
+    display: grid;
+    grid-template-columns: 1fr 120px 110px;
+    gap: 6px;
+  }
+  .bulk-fields input, .bulk-fields select {
+    padding: 5px 8px;
+    border: 1px solid #e8d8c4;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    background: white;
+    outline: none;
+    color: #2a2118;
+  }
+  .bulk-name {
+    font-size: 11px;
+    color: #9c8b72;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .logout-btn {
     position: absolute;
     top: 1rem; right: 1rem;
@@ -951,49 +1009,76 @@ ON CONFLICT DO NOTHING;</textarea>
 
 <!-- Add Modal -->
 <div class="modal-bg" id="addModal">
-  <div class="modal">
-    <div class="modal-title">Yeni bir anı ekle ✦</div>
+  <div class="modal" style="width:min(600px,100%)">
+    <div class="modal-title">Anı Ekle ✦</div>
 
-    <div class="field">
-      <label>Fotoğraf</label>
-      <img id="uploadPreview" class="upload-preview" alt="Önizleme">
-      <button class="change-photo-btn" id="changePhotoBtn" onclick="resetPhoto()">Fotoğrafı değiştir</button>
-      <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-        <span class="upload-icon">📷</span>
-        <span>Fotoğraf seç veya sürükle</span>
-        <small>JPG, PNG, WEBP · Maks 5MB</small>
+    <!-- TAB -->
+    <div style="display:flex;gap:8px;margin-bottom:1.2rem;">
+      <button id="tabSingle" onclick="switchTab('single')" class="tab-btn tab-active">Tek Fotoğraf</button>
+      <button id="tabBulk" onclick="switchTab('bulk')" class="tab-btn">Çoklu Yükleme</button>
+    </div>
+
+    <!-- TEK FOTOĞRAF -->
+    <div id="paneSingle">
+      <div class="field">
+        <label>Fotoğraf</label>
+        <img id="uploadPreview" class="upload-preview" alt="Önizleme">
+        <button class="change-photo-btn" id="changePhotoBtn" onclick="resetPhoto()">Fotoğrafı değiştir</button>
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+          <span class="upload-icon">📷</span>
+          <span>Fotoğraf seç veya sürükle</span>
+          <small>JPG, PNG, WEBP · Maks 5MB</small>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(event)">
+        <div class="upload-progress" id="uploadProgress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
       </div>
-      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(event)">
-      <div class="upload-progress" id="uploadProgress">
-        <div class="progress-bar" id="progressBar"></div>
+      <div class="field">
+        <label>Not / Açıklama</label>
+        <textarea id="noteInput" placeholder="Bu anıyla ilgili bir şey yaz..."></textarea>
+      </div>
+      <div class="field">
+        <label>Tarih</label>
+        <input type="date" id="dateInput">
+      </div>
+      <div class="field">
+        <label>Etiket</label>
+        <select id="tagInput">
+          <option value="">Seç...</option>
+          <option value="özel">💖 Özel</option>
+          <option value="seyahat">✈️ Seyahat</option>
+          <option value="yemek">🍽️ Yemek</option>
+          <option value="macera">🌿 Macera</option>
+          <option value="favori">⭐ Favori</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('addModal')">İptal</button>
+        <button class="btn-save" id="saveBtn" onclick="saveMemory()">Anıya Ekle ♡</button>
       </div>
     </div>
 
-    <div class="field">
-      <label>Not / Açıklama</label>
-      <textarea id="noteInput" placeholder="Bu anıyla ilgili bir şey yaz..."></textarea>
-    </div>
-
-    <div class="field">
-      <label>Tarih</label>
-      <input type="date" id="dateInput">
-    </div>
-
-    <div class="field">
-      <label>Etiket</label>
-      <select id="tagInput">
-        <option value="">Seç...</option>
-        <option value="özel">💖 Özel</option>
-        <option value="seyahat">✈️ Seyahat</option>
-        <option value="yemek">🍽️ Yemek</option>
-        <option value="macera">🌿 Macera</option>
-        <option value="favori">⭐ Favori</option>
-      </select>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('addModal')">İptal</button>
-      <button class="btn-save" id="saveBtn" onclick="saveMemory()">Anıya Ekle ♡</button>
+    <!-- ÇOKLU YÜKLEME -->
+    <div id="paneBulk" style="display:none">
+      <div class="field">
+        <label>Fotoğraflar (birden fazla seçebilirsin)</label>
+        <div class="upload-area" id="bulkArea" onclick="document.getElementById('bulkInput').click()">
+          <span class="upload-icon">📷</span>
+          <span>Fotoğrafları seç</span>
+          <small>Birden fazla seçmek için Ctrl basılı tut</small>
+        </div>
+        <input type="file" id="bulkInput" accept="image/*" multiple style="display:none" onchange="handleBulkFiles(event)">
+      </div>
+      <div id="bulkList" style="display:none;max-height:340px;overflow-y:auto;"></div>
+      <div class="upload-progress" id="bulkProgress" style="display:none">
+        <div class="progress-bar" id="bulkBar"></div>
+      </div>
+      <div id="bulkStatus" style="font-size:13px;color:#9c8b72;margin-top:8px;text-align:center;"></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('addModal')">İptal</button>
+        <button class="btn-save" id="bulkSaveBtn" onclick="saveBulk()">Hepsini Yükle ♡</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1172,6 +1257,81 @@ function setFilter(f, el) {
 }
 
 // ── ADD MEMORY ──
+function switchTab(tab) {
+  document.getElementById('paneSingle').style.display = tab === 'single' ? 'block' : 'none';
+  document.getElementById('paneBulk').style.display = tab === 'bulk' ? 'block' : 'none';
+  document.getElementById('tabSingle').className = 'tab-btn' + (tab === 'single' ? ' tab-active' : '');
+  document.getElementById('tabBulk').className = 'tab-btn' + (tab === 'bulk' ? ' tab-active' : '');
+}
+
+let bulkFiles = [];
+
+function handleBulkFiles(e) {
+  bulkFiles = Array.from(e.target.files);
+  const list = document.getElementById('bulkList');
+  list.style.display = 'block';
+  list.innerHTML = '';
+  const today = new Date().toISOString().split('T')[0];
+  bulkFiles.forEach((file, i) => {
+    const url = URL.createObjectURL(file);
+    list.innerHTML += `
+      <div class="bulk-item">
+        <img class="bulk-thumb" src="${url}">
+        <div>
+          <div class="bulk-name">${file.name}</div>
+          <div class="bulk-fields">
+            <input type="text" placeholder="Not..." id="bnote${i}">
+            <input type="date" id="bdate${i}" value="${today}">
+            <select id="btag${i}">
+              <option value="">Etiket...</option>
+              <option value="özel">💖 Özel</option>
+              <option value="seyahat">✈️ Seyahat</option>
+              <option value="yemek">🍽️ Yemek</option>
+              <option value="macera">🌿 Macera</option>
+              <option value="favori">⭐ Favori</option>
+            </select>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+async function saveBulk() {
+  if (!bulkFiles.length) { showToast('Önce fotoğraf seç'); return; }
+  const btn = document.getElementById('bulkSaveBtn');
+  btn.disabled = true;
+  const progress = document.getElementById('bulkProgress');
+  const bar = document.getElementById('bulkBar');
+  const status = document.getElementById('bulkStatus');
+  progress.style.display = 'block';
+
+  let done = 0;
+  for (let i = 0; i < bulkFiles.length; i++) {
+    const file = bulkFiles[i];
+    const note = document.getElementById(`bnote${i}`).value.trim();
+    const date = document.getElementById(`bdate${i}`).value;
+    const tag = document.getElementById(`btag${i}`).value;
+    status.textContent = `Yükleniyor ${i+1}/${bulkFiles.length}...`;
+
+    const ext = file.name.split('.').pop();
+    const filename = `${Date.now()}_${i}.${ext}`;
+    const { error: upErr } = await sb.storage.from('photos').upload(filename, file, { cacheControl: '3600', upsert: false });
+    if (upErr) { showToast(`${file.name} yüklenemedi`); continue; }
+
+    const { data: urlData } = sb.storage.from('photos').getPublicUrl(filename);
+    const photo_url = urlData.publicUrl;
+    const { data, error } = await sb.from('memories').insert([{ note: note || file.name, date, tag, photo_url, liked: false }]).select();
+    if (!error && data) memories.unshift(data[0]);
+
+    done++;
+    bar.style.width = `${Math.round((i+1)/bulkFiles.length*100)}%`;
+  }
+
+  status.textContent = `${done}/${bulkFiles.length} anı eklendi ♡`;
+  render();
+  setTimeout(() => { closeModal('addModal'); showToast(`${done} anı eklendi ♡`); }, 1200);
+}
+
 function openAddModal() {
   pendingFile = null;
   document.getElementById('noteInput').value = '';
