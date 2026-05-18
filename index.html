@@ -431,6 +431,53 @@
     font-family: 'DM Sans', sans-serif;
   }
 
+  /* ── PAGE TABS ── */
+  .page-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #e8d8c4;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 11;
+  }
+  .page-tab {
+    padding: 12px 28px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: #9c8b72;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .page-tab.active {
+    color: #b8956a;
+    border-bottom-color: #b8956a;
+    font-weight: 500;
+  }
+
+  /* ── GAME ── */
+  .game-wrap { max-width: 600px; margin: 0 auto; }
+  .player-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .pcard { background: white; border: 1px solid #e8d8c4; border-radius: 16px; padding: 1rem; text-align: center; }
+  .pcard h3 { font-size: 12px; color: #9c8b72; margin-bottom: .6rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+  .bunny-canvas { font-size: 56px; line-height: 1; margin: .4rem 0; cursor: pointer; display: block; transition: transform .15s; }
+  .bunny-canvas:active { transform: scale(.88); }
+  .bunny-name { font-size: 15px; font-weight: 500; color: #2a2118; margin: .25rem 0; }
+  .streak-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; background: #f5ede0; color: #8b6914; margin-bottom: .5rem; }
+  .stat-row { display: flex; align-items: center; gap: 6px; margin: .25rem 0; }
+  .stat-label { font-size: 11px; color: #9c8b72; width: 44px; text-align: left; }
+  .stat-val { font-size: 11px; font-weight: 500; color: #2a2118; width: 32px; text-align: right; }
+  .bar-bg { flex: 1; background: #f5ede0; border-radius: 4px; height: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width .4s; }
+  .btn-row { display: flex; gap: 5px; margin-top: .7rem; justify-content: center; flex-wrap: wrap; }
+  .act-btn { padding: 5px 10px; border-radius: 20px; border: 1px solid #e8d8c4; background: transparent; font-size: 12px; cursor: pointer; color: #2a2118; font-family: 'DM Sans', sans-serif; transition: background .15s; }
+  .act-btn:hover { background: #f5ede0; }
+  .dead-msg { color: #c45a5a; font-size: 12px; margin-top: .5rem; }
+  .game-log { text-align: center; font-size: 13px; color: #9c8b72; margin-top: 1rem; min-height: 20px; font-style: italic; }
+
   /* ── TOOLBAR ── */
   .toolbar {
     display: flex;
@@ -983,6 +1030,13 @@ ON CONFLICT DO NOTHING;</textarea>
     <button class="logout-btn" onclick="logout()">Çıkış</button>
   </header>
 
+  <div class="page-tabs">
+    <button class="page-tab active" id="ptab-memories" onclick="switchPage('memories')">💌 Anılar</button>
+    <button class="page-tab" id="ptab-game" onclick="switchPage('game')">🐰 Tavşanlar</button>
+  </div>
+
+  <!-- MEMORIES PAGE -->
+  <div id="page-memories">
   <div class="toolbar">
     <button class="add-btn" onclick="openAddModal()">
       + Yeni Anı Ekle
@@ -1001,9 +1055,49 @@ ON CONFLICT DO NOTHING;</textarea>
       <span id="statLikes">0 favori</span>
     </div>
   </div>
-
   <div class="gallery" id="gallery">
     <div class="loading">Anılar yükleniyor...</div>
+  </div>
+  </div>
+
+  <!-- GAME PAGE -->
+  <div id="page-game" style="display:none;padding:1.5rem">
+    <div class="game-wrap">
+      <div class="player-grid">
+        <div class="pcard">
+          <h3>Ferhat'ın Tavşanı</h3>
+          <span class="bunny-canvas" id="bunny-f" onclick="petBunny('f')">🐇</span>
+          <div class="bunny-name">Hüsnü</div>
+          <div class="streak-badge" id="streak-f">0 günlük seri</div>
+          <div class="stat-row"><span class="stat-label">Açlık</span><div class="bar-bg"><div class="bar-fill" id="hunger-f" style="background:#b8956a;width:100%"></div></div><span class="stat-val" id="hunger-val-f">100%</span></div>
+          <div class="stat-row"><span class="stat-label">Mutluluk</span><div class="bar-bg"><div class="bar-fill" id="happy-f" style="background:#c87ca0;width:100%"></div></div><span class="stat-val" id="happy-val-f">100%</span></div>
+          <div class="stat-row"><span class="stat-label">Enerji</span><div class="bar-bg"><div class="bar-fill" id="energy-f" style="background:#7aab7a;width:100%"></div></div><span class="stat-val" id="energy-val-f">100%</span></div>
+          <div class="btn-row">
+            <button class="act-btn" onclick="feedBunny('f')">🥕 Besle</button>
+            <button class="act-btn" onclick="petBunny('f')">🤍 Sev</button>
+            <button class="act-btn" onclick="playBunny('f')">🎾 Oyna</button>
+          </div>
+          <div class="dead-msg" id="dead-f" style="display:none">😢 Hüsnü çok ihmal edildi, sıfırlandı!</div>
+        </div>
+
+        <div class="pcard">
+          <h3>Tuğba'nın Tavşanı</h3>
+          <span class="bunny-canvas" id="bunny-t" onclick="petBunny('t')">🐰</span>
+          <div class="bunny-name">Asiye</div>
+          <div class="streak-badge" id="streak-t">0 günlük seri</div>
+          <div class="stat-row"><span class="stat-label">Açlık</span><div class="bar-bg"><div class="bar-fill" id="hunger-t" style="background:#b8956a;width:100%"></div></div><span class="stat-val" id="hunger-val-t">100%</span></div>
+          <div class="stat-row"><span class="stat-label">Mutluluk</span><div class="bar-bg"><div class="bar-fill" id="happy-t" style="background:#c87ca0;width:100%"></div></div><span class="stat-val" id="happy-val-t">100%</span></div>
+          <div class="stat-row"><span class="stat-label">Enerji</span><div class="bar-bg"><div class="bar-fill" id="energy-t" style="background:#7aab7a;width:100%"></div></div><span class="stat-val" id="energy-val-t">100%</span></div>
+          <div class="btn-row">
+            <button class="act-btn" onclick="feedBunny('t')">🥕 Besle</button>
+            <button class="act-btn" onclick="petBunny('t')">🤍 Sev</button>
+            <button class="act-btn" onclick="playBunny('t')">🎾 Oyna</button>
+          </div>
+          <div class="dead-msg" id="dead-t" style="display:none">😢 Asiye çok ihmal edildi, sıfırlandı!</div>
+        </div>
+      </div>
+      <div class="game-log" id="game-log">Tavşanlarına bak! Her gün en az bir kez ziyaret et 🥕</div>
+    </div>
   </div>
 </div>
 
@@ -1177,6 +1271,133 @@ function checkLogin() {
     document.getElementById('pwInput').value = '';
     document.getElementById('pwInput').focus();
   }
+}
+
+// ── PAGE SWITCH ──
+function switchPage(page) {
+  document.getElementById('page-memories').style.display = page === 'memories' ? 'block' : 'none';
+  document.getElementById('page-game').style.display = page === 'game' ? 'block' : 'none';
+  document.getElementById('ptab-memories').className = 'page-tab' + (page === 'memories' ? ' active' : '');
+  document.getElementById('ptab-game').className = 'page-tab' + (page === 'game' ? ' active' : '');
+  if (page === 'game') renderBunnies();
+}
+
+// ── BUNNY GAME ──
+const BUNNY_KEY = 'husnu_asiye_v1';
+
+function defaultBunny(name) {
+  return { name, hunger: 100, happy: 100, energy: 100, streak: 0, lastVisit: null };
+}
+
+function loadBunnies() {
+  try {
+    const d = JSON.parse(localStorage.getItem(BUNNY_KEY) || 'null');
+    if (d && d.f && d.t) return d;
+  } catch(e) {}
+  return { f: defaultBunny('Hüsnü'), t: defaultBunny('Asiye') };
+}
+
+function saveBunnies(s) {
+  try { localStorage.setItem(BUNNY_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+let bunnies = loadBunnies();
+
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+
+function decayBunnies() {
+  ['f','t'].forEach(p => {
+    const s = bunnies[p];
+    const t = todayStr();
+    if (!s.lastVisit || s.lastVisit === t) return;
+    const diff = Math.floor((new Date(t) - new Date(s.lastVisit)) / (1000*60*60*24));
+    if (diff >= 3) {
+      const name = s.name;
+      bunnies[p] = defaultBunny(name);
+      bunnies[p].lastVisit = t;
+      document.getElementById('dead-'+p).style.display = 'block';
+      setTimeout(() => document.getElementById('dead-'+p).style.display = 'none', 3000);
+      gameLog(name + ' çok ihmal edildi ve sıfırlandı 😢');
+    } else {
+      s.hunger = Math.max(0, s.hunger - diff * 15);
+      s.happy  = Math.max(0, s.happy  - diff * 10);
+      s.energy = Math.max(0, s.energy - diff * 5);
+    }
+  });
+}
+
+function checkBunnyStreak(p) {
+  const s = bunnies[p];
+  const t = todayStr();
+  if (!s.lastVisit) { s.streak = 1; s.lastVisit = t; return; }
+  if (s.lastVisit === t) return;
+  const diff = (new Date(t) - new Date(s.lastVisit)) / (1000*60*60*24);
+  if (diff < 2) { s.streak++; } else { s.streak = 1; }
+  s.lastVisit = t;
+}
+
+function getBunnyEmoji(p) {
+  const s = bunnies[p];
+  const avg = (s.hunger + s.happy + s.energy) / 3;
+  if (p === 'f') return avg > 40 ? '🐇' : '😟';
+  return avg > 70 ? '🐰' : avg > 40 ? '😐' : '😟';
+}
+
+function renderBunnies() {
+  decayBunnies();
+  ['f','t'].forEach(p => {
+    const s = bunnies[p];
+    document.getElementById('bunny-'+p).textContent = getBunnyEmoji(p);
+    document.getElementById('streak-'+p).textContent = s.streak + ' günlük seri';
+    ['hunger','happy','energy'].forEach(stat => {
+      const v = Math.round(s[stat]);
+      document.getElementById(stat+'-'+p).style.width = v + '%';
+      document.getElementById(stat+'-val-'+p).textContent = v + '%';
+    });
+  });
+  saveBunnies(bunnies);
+}
+
+function gameLog(msg) {
+  const el = document.getElementById('game-log');
+  if (el) el.textContent = msg;
+}
+
+function feedBunny(p) {
+  checkBunnyStreak(p);
+  const s = bunnies[p];
+  s.hunger = Math.min(100, s.hunger + 25);
+  s.energy = Math.min(100, s.energy + 10);
+  const b = document.getElementById('bunny-'+p);
+  b.style.transform = 'scale(1.3)';
+  setTimeout(() => b.style.transform = '', 300);
+  gameLog(s.name + ' havucunu yedi! 🥕');
+  renderBunnies();
+}
+
+function petBunny(p) {
+  checkBunnyStreak(p);
+  const s = bunnies[p];
+  s.happy = Math.min(100, s.happy + 20);
+  const b = document.getElementById('bunny-'+p);
+  b.style.transform = 'rotate(15deg) scale(1.2)';
+  setTimeout(() => b.style.transform = '', 300);
+  gameLog(s.name + ' sevilmekten mutlu oldu 🤍');
+  renderBunnies();
+}
+
+function playBunny(p) {
+  const s = bunnies[p];
+  if (s.energy < 15) { gameLog(s.name + ' çok yorgun, önce besle!'); return; }
+  checkBunnyStreak(p);
+  s.happy  = Math.min(100, s.happy + 15);
+  s.energy = Math.max(0, s.energy - 20);
+  s.hunger = Math.max(0, s.hunger - 10);
+  const b = document.getElementById('bunny-'+p);
+  b.style.transform = 'translateY(-10px)';
+  setTimeout(() => b.style.transform = '', 400);
+  gameLog(s.name + ' seninle oynadı! 🎾');
+  renderBunnies();
 }
 
 function logout() {
