@@ -9,7 +9,7 @@
 <style>
   /* ── CONFIG: Buraya kendi bilgilerinizi yazın ── */
   :root {
-    --site-password: "bizim2024"; /* ← Şifreyi buraya yaz */
+    --site-password: "25.10.2006"; /* ← Şifreyi buraya yaz */
     --couple-name: "Bizim Anılarımız"; /* ← Site başlığı */
   }
 
@@ -883,7 +883,7 @@ const SESSION_KEY = 'ani_session';
 const SB_URL = 'https://hezmhwznvlfzpthoeqhl.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhlem1od3pudmxmenB0aG9lcWhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNzMwNjYsImV4cCI6MjA5NDY0OTA2Nn0.7D3FXlRchlSVAazJuF-jS-nbJ0xGp5ShNq8KYnROy_A';
 const SITE_PASS = '25.10.2006';
-let supabase = null;
+let sb = null;
 let memories = [];
 let currentFilter = 'all';
 let currentLbId = null;
@@ -893,7 +893,7 @@ let pendingFile = null;
 window.addEventListener('DOMContentLoaded', init);
 
 function init() {
-  supabase = window.supabase.createClient(SB_URL, SB_KEY);
+  sb = window.supabase.createClient(SB_URL, SB_KEY);
   const sess = sessionStorage.getItem(SESSION_KEY);
   if (sess === 'ok') {
     showApp();
@@ -946,7 +946,7 @@ function logout() {
 
 // ── DATA ──
 async function loadMemories() {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('memories')
     .select('*')
     .order('created_at', { ascending: false });
@@ -1003,7 +1003,7 @@ async function toggleLike(e, id) {
   const m = memories.find(x => x.id === id);
   if (!m) return;
   m.liked = !m.liked;
-  await supabase.from('memories').update({ liked: m.liked }).eq('id', id);
+  await sb.from('memories').update({ liked: m.liked }).eq('id', id);
   render();
 }
 
@@ -1076,7 +1076,7 @@ async function saveMemory() {
     const ext = pendingFile.name.split('.').pop();
     const filename = `${Date.now()}.${ext}`;
 
-    const { data: upData, error: upErr } = await supabase.storage
+    const { data: upData, error: upErr } = await sb.storage
       .from('photos')
       .upload(filename, pendingFile, { cacheControl: '3600', upsert: false });
 
@@ -1089,12 +1089,12 @@ async function saveMemory() {
       return;
     }
 
-    const { data: urlData } = supabase.storage.from('photos').getPublicUrl(filename);
+    const { data: urlData } = sb.storage.from('photos').getPublicUrl(filename);
     photo_url = urlData.publicUrl;
     bar.style.width = '100%';
   }
 
-  const { data, error } = await supabase.from('memories').insert([{ note, date, tag, photo_url, liked: false }]).select();
+  const { data, error } = await sb.from('memories').insert([{ note, date, tag, photo_url, liked: false }]).select();
 
   if (error) {
     showToast('Kayıt hatası 😔');
@@ -1139,7 +1139,7 @@ async function toggleLightboxLike() {
   const m = memories.find(x => x.id === currentLbId);
   if (!m) return;
   m.liked = !m.liked;
-  await supabase.from('memories').update({ liked: m.liked }).eq('id', currentLbId);
+  await sb.from('memories').update({ liked: m.liked }).eq('id', currentLbId);
   document.getElementById('lbLikeBtn').textContent = m.liked ? '♥ Favoride' : '♡ Favoriye Ekle';
   render();
   showToast(m.liked ? 'Favoriye eklendi ♥' : 'Favoriden çıkarıldı');
@@ -1151,10 +1151,10 @@ async function deleteMemory() {
 
   if (m && m.photo_url) {
     const filename = m.photo_url.split('/').pop();
-    await supabase.storage.from('photos').remove([filename]);
+    await sb.storage.from('photos').remove([filename]);
   }
 
-  await supabase.from('memories').delete().eq('id', currentLbId);
+  await sb.from('memories').delete().eq('id', currentLbId);
   memories = memories.filter(x => x.id !== currentLbId);
   closeLightbox();
   render();
