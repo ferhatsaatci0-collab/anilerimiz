@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bizim Anılarımız ♡</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   /* ── CONFIG: Buraya kendi bilgilerinizi yazın ── */
@@ -16,10 +16,10 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 300;
-    background: #fdf8f5;
-    color: #2a2118;
+    background: #f5f0fa;
+    color: #1e1830;
     min-height: 100vh;
   }
 
@@ -29,7 +29,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fdf8f5;
+    background: #f5f0fa;
     padding: 2rem;
   }
 
@@ -52,17 +52,17 @@
   }
 
   .login-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 32px;
     font-style: italic;
     font-weight: 300;
-    color: #2a2118;
+    color: #1e1830;
     margin-bottom: 6px;
   }
 
   .login-sub {
     font-size: 12px;
-    color: #9c8b7e;
+    color: #8b7aaa;
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 2rem;
@@ -71,30 +71,30 @@
   .login-input {
     width: 100%;
     padding: 14px 18px;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
     border-radius: 50px;
     background: white;
     font-size: 15px;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     text-align: center;
     letter-spacing: 3px;
     outline: none;
-    color: #2a2118;
+    color: #1e1830;
     transition: border-color 0.2s;
     margin-bottom: 12px;
   }
 
-  .login-input:focus { border-color: #c4956a; }
+  .login-input:focus { border-color: #9b72cf; }
 
   .login-btn {
     width: 100%;
     padding: 14px;
     border: none;
     border-radius: 50px;
-    background: #c4956a;
+    background: #9b72cf;
     color: white;
     font-size: 14px;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 400;
     letter-spacing: 1px;
     cursor: pointer;
@@ -117,7 +117,7 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background: #fdf8f5;
+    background: #f5f0fa;
   }
 
   .setup-box {
@@ -126,49 +126,49 @@
     background: white;
     border-radius: 16px;
     padding: 2rem;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
   }
 
   .setup-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 24px;
     font-style: italic;
     margin-bottom: 1.5rem;
-    color: #2a2118;
+    color: #1e1830;
   }
 
   .setup-step {
-    background: #fdf8f5;
+    background: #f5f0fa;
     border-radius: 10px;
     padding: 1rem 1.25rem;
     margin-bottom: 12px;
-    border-left: 3px solid #c4956a;
+    border-left: 3px solid #9b72cf;
   }
 
   .setup-step h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-  .setup-step p { font-size: 13px; color: #6b5a4e; line-height: 1.6; }
+  .setup-step p { font-size: 13px; color: #5a4a7e; line-height: 1.6; }
   .setup-step code {
-    background: #ede6df;
+    background: #e8dcf5;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
     font-family: monospace;
-    color: #8b5e3c;
+    color: #7c4dbd;
   }
 
   .setup-inputs { margin-top: 1.5rem; }
   .setup-field { margin-bottom: 12px; }
-  .setup-field label { display: block; font-size: 12px; color: #9c8b7e; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
+  .setup-field label { display: block; font-size: 12px; color: #8b7aaa; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
   .setup-field input {
     width: 100%;
     padding: 10px 14px;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
     border-radius: 8px;
     background: white;
     font-size: 13px;
     font-family: monospace;
     outline: none;
-    color: #2a2118;
+    color: #1e1830;
   }
 
   .setup-connect-btn {
@@ -176,10 +176,10 @@
     padding: 12px;
     border: none;
     border-radius: 8px;
-    background: #c4956a;
+    background: #9b72cf;
     color: white;
     font-size: 14px;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     cursor: pointer;
     margin-top: 8px;
     transition: opacity 0.2s;
@@ -196,7 +196,7 @@
   header {
     text-align: center;
     padding: 3rem 1.5rem 2rem;
-    border-bottom: 1px solid #e8ddd6;
+    border-bottom: 1px solid #ddd0f0;
     position: relative;
     overflow: hidden;
   }
@@ -220,17 +220,17 @@
   }
 
   h1 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 40px;
     font-weight: 300;
     font-style: italic;
-    color: #2a2118;
+    color: #1e1830;
     line-height: 1.2;
   }
 
   .header-sub {
     font-size: 11px;
-    color: #9c8b7e;
+    color: #8b7aaa;
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-top: 8px;
@@ -240,24 +240,62 @@
     display: inline-block;
     margin-top: 14px;
     font-size: 12px;
-    color: #c4956a;
-    border: 1px solid #e8c9a8;
+    color: #9b72cf;
+    border: 1px solid #cbb8e8;
     padding: 5px 16px;
     border-radius: 20px;
-    background: #fff9f4;
+    background: #faf7ff;
+  }
+
+  .couple-names {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: #9b72cf;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .day-counter {
+    margin-top: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #ede5f7;
+    border: 1px solid #cbb8e8;
+    border-radius: 50px;
+    padding: 10px 28px;
+  }
+
+  .day-number {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 64px;
+    font-weight: 300;
+    color: #9b72cf;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .day-label {
+    font-size: 14px;
+    color: #8b7aaa;
+    letter-spacing: 0.5px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
   }
 
   .logout-btn {
     position: absolute;
     top: 1rem; right: 1rem;
     background: none;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
     border-radius: 20px;
     padding: 5px 12px;
     font-size: 12px;
-    color: #9c8b7e;
+    color: #8b7aaa;
     cursor: pointer;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
   }
 
   /* ── TOOLBAR ── */
@@ -266,7 +304,7 @@
     align-items: center;
     gap: 10px;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e8ddd6;
+    border-bottom: 1px solid #ddd0f0;
     flex-wrap: wrap;
     background: white;
     position: sticky;
@@ -281,10 +319,10 @@
     padding: 9px 20px;
     border-radius: 25px;
     border: none;
-    background: #c4956a;
+    background: #9b72cf;
     color: white;
     font-size: 13px;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     cursor: pointer;
     transition: opacity 0.2s;
     white-space: nowrap;
@@ -302,20 +340,20 @@
   .filter-btn {
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
     background: transparent;
     font-size: 12px;
-    color: #9c8b7e;
+    color: #8b7aaa;
     cursor: pointer;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     transition: all 0.15s;
     white-space: nowrap;
   }
 
   .filter-btn.active {
-    background: #f5ede4;
-    border-color: #c4956a;
-    color: #8b5e3c;
+    background: #ede5f7;
+    border-color: #9b72cf;
+    color: #7c4dbd;
   }
 
   .stats {
@@ -324,7 +362,7 @@
     gap: 16px;
     padding: 8px 0 0;
     font-size: 12px;
-    color: #9c8b7e;
+    color: #8b7aaa;
   }
 
   /* ── GALLERY ── */
@@ -339,7 +377,7 @@
     background: white;
     border-radius: 14px;
     overflow: hidden;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
     cursor: pointer;
     transition: transform 0.2s;
     position: relative;
@@ -361,8 +399,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f5ede4;
-    color: #c4956a;
+    background: #ede5f7;
+    color: #9b72cf;
     gap: 8px;
     font-size: 13px;
   }
@@ -373,16 +411,16 @@
 
   .card-date {
     font-size: 11px;
-    color: #9c8b7e;
+    color: #8b7aaa;
     letter-spacing: 0.5px;
     margin-bottom: 5px;
   }
 
   .card-note {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 16px;
     font-style: italic;
-    color: #2a2118;
+    color: #1e1830;
     line-height: 1.45;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -396,8 +434,8 @@
     font-size: 10px;
     padding: 3px 10px;
     border-radius: 10px;
-    background: #f5ede4;
-    color: #8b5e3c;
+    background: #ede5f7;
+    color: #7c4dbd;
     letter-spacing: 0.5px;
   }
 
@@ -424,16 +462,16 @@
     grid-column: 1 / -1;
     text-align: center;
     padding: 5rem 2rem;
-    color: #9c8b7e;
+    color: #8b7aaa;
   }
 
   .empty-state .big-emoji { font-size: 56px; margin-bottom: 1rem; display: block; }
 
   .empty-state p {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 22px;
     font-style: italic;
-    color: #6b5a4e;
+    color: #5a4a7e;
     margin-bottom: 8px;
   }
 
@@ -444,7 +482,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(42,33,24,0.6);
+    background: rgba(30,24,48,0.65);
     z-index: 100;
     align-items: center;
     justify-content: center;
@@ -455,21 +493,21 @@
   .modal-bg.open { display: flex; }
 
   .modal {
-    background: #fdf8f5;
+    background: #f5f0fa;
     border-radius: 16px;
     padding: 2rem;
     width: min(480px, 100%);
     max-height: 90vh;
     overflow-y: auto;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
   }
 
   .modal-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 24px;
     font-style: italic;
     margin-bottom: 1.5rem;
-    color: #2a2118;
+    color: #1e1830;
   }
 
   .field { margin-bottom: 1rem; }
@@ -477,7 +515,7 @@
   .field label {
     display: block;
     font-size: 11px;
-    color: #9c8b7e;
+    color: #8b7aaa;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin-bottom: 6px;
@@ -486,31 +524,31 @@
   .field input, .field textarea, .field select {
     width: 100%;
     padding: 10px 14px;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
     border-radius: 8px;
     background: white;
     font-size: 14px;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 300;
-    color: #2a2118;
+    color: #1e1830;
     outline: none;
     transition: border-color 0.2s;
   }
 
   .field textarea { resize: vertical; min-height: 90px; }
-  .field input:focus, .field textarea:focus, .field select:focus { border-color: #c4956a; }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: #9b72cf; }
 
   .upload-area {
-    border: 2px dashed #e8c9a8;
+    border: 2px dashed #cbb8e8;
     border-radius: 10px;
     padding: 2rem;
     text-align: center;
     cursor: pointer;
     transition: background 0.15s;
-    color: #9c8b7e;
+    color: #8b7aaa;
   }
 
-  .upload-area:hover { background: #fff9f4; }
+  .upload-area:hover { background: #faf7ff; }
   .upload-area .upload-icon { font-size: 30px; margin-bottom: 8px; display: block; }
   .upload-area span { font-size: 13px; }
   .upload-area small { display: block; font-size: 11px; color: #b8a89a; margin-top: 4px; }
@@ -526,12 +564,12 @@
 
   .change-photo-btn {
     font-size: 12px;
-    color: #c4956a;
+    color: #9b72cf;
     background: none;
     border: none;
     cursor: pointer;
     text-decoration: underline;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     margin-bottom: 8px;
     display: none;
   }
@@ -546,23 +584,23 @@
   .btn-cancel {
     padding: 10px 20px;
     border-radius: 25px;
-    border: 1px solid #e8ddd6;
+    border: 1px solid #ddd0f0;
     background: transparent;
-    color: #9c8b7e;
+    color: #8b7aaa;
     font-size: 13px;
     cursor: pointer;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
   }
 
   .btn-save {
     padding: 10px 24px;
     border-radius: 25px;
     border: none;
-    background: #c4956a;
+    background: #9b72cf;
     color: white;
     font-size: 13px;
     cursor: pointer;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     transition: opacity 0.2s;
   }
 
@@ -572,7 +610,7 @@
   .upload-progress {
     width: 100%;
     height: 4px;
-    background: #e8ddd6;
+    background: #ddd0f0;
     border-radius: 2px;
     margin-top: 8px;
     display: none;
@@ -581,7 +619,7 @@
 
   .progress-bar {
     height: 100%;
-    background: #c4956a;
+    background: #9b72cf;
     border-radius: 2px;
     transition: width 0.3s;
     width: 0%;
@@ -616,7 +654,7 @@
   }
 
   .lightbox-note {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 22px;
     font-style: italic;
     line-height: 1.4;
@@ -625,7 +663,7 @@
 
   .lightbox-meta {
     font-size: 12px;
-    color: #9c8b7e;
+    color: #8b7aaa;
     margin-top: 6px;
     letter-spacing: 1px;
   }
@@ -646,7 +684,7 @@
     color: rgba(255,255,255,0.7);
     font-size: 12px;
     cursor: pointer;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     transition: background 0.15s;
   }
 
@@ -672,7 +710,7 @@
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #2a2118;
+    background: #1e1830;
     color: #f0e6dc;
     padding: 10px 24px;
     border-radius: 25px;
@@ -689,9 +727,9 @@
   .loading {
     text-align: center;
     padding: 4rem;
-    color: #9c8b7e;
+    color: #8b7aaa;
     font-style: italic;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 20px;
   }
 
@@ -724,7 +762,7 @@
 
     <div class="setup-step">
       <h3>1. Supabase hesabı aç</h3>
-      <p><a href="https://supabase.com" target="_blank" style="color:#c4956a">supabase.com</a> adresine git → "Start your project" → Ücretsiz hesap oluştur</p>
+      <p><a href="https://supabase.com" target="_blank" style="color:#9b72cf">supabase.com</a> adresine git → "Start your project" → Ücretsiz hesap oluştur</p>
     </div>
 
     <div class="setup-step">
@@ -736,7 +774,7 @@
       <h3>3. Tablo oluştur</h3>
       <p>Sol menüden <code>SQL Editor</code> → "New Query" → Aşağıdaki kodu yapıştır ve çalıştır:</p>
       <br>
-      <textarea readonly style="width:100%;font-size:11px;font-family:monospace;border:1px solid #e8ddd6;border-radius:6px;padding:10px;background:#f9f4ef;color:#5a4a3a;height:140px;resize:none;">CREATE TABLE memories (
+      <textarea readonly style="width:100%;font-size:11px;font-family:monospace;border:1px solid #ddd0f0;border-radius:6px;padding:10px;background:#f9f4ef;color:#5a4a3a;height:140px;resize:none;">CREATE TABLE memories (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   note text,
   date date,
@@ -781,9 +819,14 @@ ON CONFLICT DO NOTHING;</textarea>
 <div id="mainApp">
   <header>
     <div class="header-petals" id="petalContainer"></div>
+    <div class="couple-names">Ferhat & Tuğba</div>
     <h1 id="siteTitle">Bizim Anılarımız</h1>
     <div class="header-sub">Her an, her gülüş, her bakış</div>
     <div class="header-date">✦ Birlikte geçirilen güzel zamanlar ✦</div>
+    <div class="day-counter">
+      <span class="day-number" id="dayCount">0</span>
+      <span class="day-label">gündür beraberiz 🌸</span>
+    </div>
     <button class="logout-btn" onclick="logout()">Çıkış</button>
   </header>
 
@@ -920,7 +963,15 @@ function showApp() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('mainApp').style.display = 'block';
+  updateDayCounter();
   loadMemories();
+}
+
+function updateDayCounter() {
+  const startDate = new Date('2021-10-25');
+  const today = new Date();
+  const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  document.getElementById('dayCount').textContent = diff;
 }
 
 // ── LOGIN ──
@@ -1187,7 +1238,7 @@ function setupPetals() {
     el.textContent = chars[i % chars.length];
     el.style.left = Math.random() * 100 + '%';
     el.style.top = '-30px';
-    el.style.color = i % 3 === 0 ? '#D4537E' : '#c4956a';
+    el.style.color = i % 3 === 0 ? '#D4537E' : '#9b72cf';
     el.style.animationDelay = Math.random() * 10 + 's';
     el.style.animationDuration = (8 + Math.random() * 8) + 's';
     el.style.fontSize = (12 + Math.random() * 14) + 'px';
