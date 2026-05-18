@@ -1801,10 +1801,10 @@ function toggleChat() {
 }
 
 async function loadChat() {
-  var result = await supabase.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
+  var result = await sb.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
   chatMsgs = result.data || [];
   renderChat();
-  supabase.channel('public-messages')
+  sb.channel('public-messages')
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, function(payload) {
       chatMsgs.push(payload.new);
       renderChat();
@@ -1850,7 +1850,7 @@ async function sendMessage() {
   var content = input.value.trim();
   if (!content) return;
   input.value = '';
-  await supabase.from('messages').insert([{ sender: sender, content: content }]);
+  await sb.from('messages').insert([{ sender: sender, content: content }]);
 }
 </script>
 </body>
