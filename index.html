@@ -919,6 +919,22 @@
     .toolbar { padding: 0.75rem 1rem; }
     .filters { margin-left: 0; }
   }
+
+/* CHAT */
+.chat-fab { position: fixed; bottom: 24px; right: 24px; background: #c4956a; color: white; border: none; border-radius: 50px; padding: 12px 20px; font-size: 15px; cursor: pointer; box-shadow: 0 4px 20px rgba(196,149,106,0.4); z-index: 50; font-family: 'Jost', sans-serif; transition: transform 0.2s; display: none; }
+.chat-fab:hover { transform: scale(1.05); }
+.chat-badge { background: #e05555; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: none; align-items: center; justify-content: center; margin-left: 4px; vertical-align: middle; }
+.chat-panel { position: fixed; bottom: 80px; right: 24px; width: 320px; max-height: 460px; background: #fdf8f5; border-radius: 16px; border: 1px solid #e8ddd6; box-shadow: 0 8px 40px rgba(42,33,24,0.15); z-index: 50; display: none; flex-direction: column; overflow: hidden; }
+.chat-panel.open { display: flex; }
+.chat-header { padding: 14px 16px; border-bottom: 1px solid #e8ddd6; display: flex; align-items: center; justify-content: space-between; background: white; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; min-height: 200px; }
+.chat-bubble { max-width: 80%; padding: 8px 12px; border-radius: 14px; font-size: 13px; line-height: 1.5; word-break: break-word; }
+.chat-bubble.me { background: #c4956a; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-bubble.other { background: white; color: #2a2118; border: 1px solid #e8ddd6; align-self: flex-start; border-bottom-left-radius: 4px; }
+.bubble-sender { font-size: 10px; opacity: 0.7; margin-bottom: 2px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+.bubble-time { font-size: 10px; opacity: 0.6; margin-top: 3px; text-align: right; }
+.chat-input-area { padding: 10px 12px; border-top: 1px solid #e8ddd6; display: flex; gap: 6px; background: white; align-items: center; }
+@media (max-width: 600px) { .chat-panel { width: calc(100vw - 32px); right: 16px; } .chat-fab { right: 16px; bottom: 16px; } }
 </style>
 </head>
 <body>
@@ -1745,24 +1761,9 @@ document.addEventListener('keydown', e => {
 document.getElementById('lightbox').addEventListener('click', function(e) {
   if (e.target === this) closeLightbox();
 });
+</script>
 
-<style>
-.chat-fab { position: fixed; bottom: 24px; right: 24px; background: #c4956a; color: white; border: none; border-radius: 50px; padding: 12px 20px; font-size: 15px; cursor: pointer; box-shadow: 0 4px 20px rgba(196,149,106,0.4); z-index: 50; font-family: 'Jost', sans-serif; transition: transform 0.2s; display: none; }
-.chat-fab:hover { transform: scale(1.05); }
-.chat-badge { background: #e05555; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: none; align-items: center; justify-content: center; margin-left: 4px; vertical-align: middle; }
-.chat-panel { position: fixed; bottom: 80px; right: 24px; width: 320px; max-height: 460px; background: #fdf8f5; border-radius: 16px; border: 1px solid #e8ddd6; box-shadow: 0 8px 40px rgba(42,33,24,0.15); z-index: 50; display: none; flex-direction: column; overflow: hidden; }
-.chat-panel.open { display: flex; }
-.chat-header { padding: 14px 16px; border-bottom: 1px solid #e8ddd6; display: flex; align-items: center; justify-content: space-between; background: white; }
-.chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; min-height: 200px; }
-.chat-bubble { max-width: 80%; padding: 8px 12px; border-radius: 14px; font-size: 13px; line-height: 1.5; word-break: break-word; }
-.chat-bubble.me { background: #c4956a; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-.chat-bubble.other { background: white; color: #2a2118; border: 1px solid #e8ddd6; align-self: flex-start; border-bottom-left-radius: 4px; }
-.bubble-sender { font-size: 10px; opacity: 0.7; margin-bottom: 2px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
-.bubble-time { font-size: 10px; opacity: 0.6; margin-top: 3px; text-align: right; }
-.chat-input-area { padding: 10px 12px; border-top: 1px solid #e8ddd6; display: flex; gap: 6px; background: white; align-items: center; }
-@media (max-width: 600px) { .chat-panel { width: calc(100vw - 32px); right: 16px; } .chat-fab { right: 16px; bottom: 16px; } }
-</style>
-
+<!-- CHAT -->
 <button class="chat-fab" id="chatFab" onclick="toggleChat()">
   💬 <span id="chatBadge" class="chat-badge">!</span>
 </button>
@@ -1770,7 +1771,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
 <div class="chat-panel" id="chatPanel">
   <div class="chat-header">
     <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px">Mesajlarımız ♡</span>
-    <button onclick="toggleChat()" style="background:none;border:none;color:#9c8b7e;font-size:20px;cursor:pointer;line-height:1">✕</button>
+    <button onclick="toggleChat()" style="background:none;border:none;color:#9c8b7e;font-size:20px;cursor:pointer;line-height:1">X</button>
   </div>
   <div class="chat-messages" id="chatMessages">
     <div style="text-align:center;color:#9c8b7e;font-size:13px;padding:2rem">Henüz mesaj yok 🌸</div>
@@ -1781,13 +1782,13 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
       <option value="O">O 💕</option>
     </select>
     <input type="text" id="chatInput" placeholder="Bir şeyler yaz..." onkeydown="if(event.key==='Enter')sendMessage()" style="flex:1;padding:8px 14px;border:1px solid #e8ddd6;border-radius:20px;background:white;font-family:'Jost',sans-serif;font-size:13px;outline:none;color:#2a2118">
-    <button onclick="sendMessage()" style="padding:8px 16px;border:none;border-radius:20px;background:#c4956a;color:white;font-size:14px;cursor:pointer">↑</button>
+    <button onclick="sendMessage()" style="padding:8px 16px;border:none;border-radius:20px;background:#c4956a;color:white;font-size:14px;cursor:pointer">&#8593;</button>
   </div>
 </div>
 
 <script>
-let chatOpen = false;
-let chatMsgs = [];
+var chatOpen = false;
+var chatMsgs = [];
 
 function toggleChat() {
   chatOpen = !chatOpen;
@@ -1800,48 +1801,56 @@ function toggleChat() {
 }
 
 async function loadChat() {
-  const { data } = await supabase.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
-  chatMsgs = data || [];
+  var result = await supabase.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
+  chatMsgs = result.data || [];
   renderChat();
   supabase.channel('public-messages')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, function(payload) {
       chatMsgs.push(payload.new);
       renderChat();
       if (!chatOpen) {
-        const b = document.getElementById('chatBadge');
+        var b = document.getElementById('chatBadge');
         b.style.display = 'inline-flex';
       }
     }).subscribe();
 }
 
 function renderChat() {
-  const container = document.getElementById('chatMessages');
-  const me = document.getElementById('senderSelect') ? document.getElementById('senderSelect').value : 'Ben';
+  var container = document.getElementById('chatMessages');
+  var sel = document.getElementById('senderSelect');
+  var me = sel ? sel.value : 'Ben';
   if (!chatMsgs.length) {
     container.innerHTML = '<div style="text-align:center;color:#9c8b7e;font-size:13px;padding:2rem">Henüz mesaj yok 🌸</div>';
     return;
   }
-  container.innerHTML = chatMsgs.map(m => {
-    const isMe = m.sender === me;
-    const time = new Date(m.created_at).toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
-    return '<div class="chat-bubble ' + (isMe ? 'me' : 'other') + '"><div class="bubble-sender">' + m.sender + '</div>' + m.content + '<div class="bubble-time">' + time + '</div></div>';
-  }).join('');
+  var html = '';
+  for (var i = 0; i < chatMsgs.length; i++) {
+    var m = chatMsgs[i];
+    var isMe = m.sender === me;
+    var d = new Date(m.created_at);
+    var time = d.toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
+    html += '<div class="chat-bubble ' + (isMe ? 'me' : 'other') + '">';
+    html += '<div class="bubble-sender">' + m.sender + '</div>';
+    html += m.content;
+    html += '<div class="bubble-time">' + time + '</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
   scrollChat();
 }
 
 function scrollChat() {
-  const c = document.getElementById('chatMessages');
-  setTimeout(() => { c.scrollTop = c.scrollHeight; }, 50);
+  var c = document.getElementById('chatMessages');
+  setTimeout(function() { c.scrollTop = c.scrollHeight; }, 50);
 }
 
 async function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const sender = document.getElementById('senderSelect').value;
-  const content = input.value.trim();
+  var input = document.getElementById('chatInput');
+  var sender = document.getElementById('senderSelect').value;
+  var content = input.value.trim();
   if (!content) return;
   input.value = '';
-  const { error } = await supabase.from('messages').insert([{ sender, content }]);
-  if (error) showToast('Mesaj gönderilemedi 😔');
+  await supabase.from('messages').insert([{ sender: sender, content: content }]);
 }
 </script>
 </body>
