@@ -935,6 +935,9 @@
 .bubble-time { font-size: 10px; opacity: 0.6; margin-top: 3px; text-align: right; }
 .chat-input-area { padding: 10px 12px; border-top: 1px solid #e8ddd6; display: flex; gap: 6px; background: white; align-items: center; }
 @media (max-width: 600px) { .chat-panel { width: calc(100vw - 32px); right: 16px; } .chat-fab { right: 16px; bottom: 16px; } }
+
+/* Twemoji */
+img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
 </style>
 </head>
 <body>
@@ -1852,6 +1855,28 @@ async function sendMessage() {
   input.value = '';
   await sb.from('messages').insert([{ sender: sender, content: content }]);
 }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>
+function applyTwemoji() {
+  twemoji.parse(document.body, {
+    folder: 'svg',
+    ext: '.svg',
+    base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'
+  });
+}
+
+// Apply on load
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(applyTwemoji, 500);
+});
+
+// Re-apply when gallery or chat updates (observe DOM changes)
+var observer = new MutationObserver(function(mutations) {
+  clearTimeout(window._twemojiTimer);
+  window._twemojiTimer = setTimeout(applyTwemoji, 200);
+});
+observer.observe(document.body, { childList: true, subtree: true });
 </script>
 </body>
 </html>
