@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bizim Anılarımız ♡</title>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "1b0ac5c8-1c07-4dc8-b1d7-47556dcf8bf1",
+      notifyButton: { enable: false },
+      welcomeNotification: { disable: true }
+    });
+  });
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -1956,31 +1967,45 @@ function bunniesHug() {
 }
 
 
-// ── BİLDİRİMLER ──
+// ── BİLDİRİMLER (OneSignal) ──
 function requestNotifPermission() {
-  if (!('Notification' in window)) return;
-  if (Notification.permission === 'default') {
-    Notification.requestPermission();
+  if (window.OneSignal) {
+    OneSignal.push(function() {
+      OneSignal.showSlidedownPrompt();
+    });
   }
 }
 
-function sendNotif(title, body) {
-  if (!('Notification' in window)) return;
-  if (Notification.permission === 'granted') {
-    new Notification(title, { body, icon: 'https://ferhatsaatci0-collab.github.io/anilerimiz/favicon.ico' });
-  }
+async function sendPushNotif(title, body) {
+  // OneSignal REST API ile bildirim gönder
+  try {
+    await fetch('https://onesignal.com/api/v1/notifications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic os_v2_app_yp5mnmpgobhwznj5mo3rku7bnm3u3j7wfcqnpvicvnfhxxkpilzdfzpqvbxadbfmx5v4ow2pxuysvvb5jnlsqrpkqfkrfwriy'
+      },
+      body: JSON.stringify({
+        app_id: '1b0ac5c8-1c07-4dc8-b1d7-47556dcf8bf1',
+        included_segments: ['All'],
+        headings: { en: title, tr: title },
+        contents: { en: body, tr: body },
+        url: 'https://ferhatsaatci0-collab.github.io/anilerimiz'
+      })
+    });
+  } catch(e) {}
 }
 
 function checkBunnyNotifs() {
   ['f','t'].forEach(p => {
     const s = bunnies[p];
-    if (s.hunger < 30) sendNotif(s.name + ' acıktı! 🥕', s.name + ' seni bekliyor, hemen besle!');
-    if (s.happy < 30)  sendNotif(s.name + ' mutsuz! 🤍', s.name + ' biraz sevgi bekliyor...');
-    if (s.energy < 20) sendNotif(s.name + ' yoruldu! 😴', s.name + ' enerji dolu değil, uyut biraz.');
+    if (s.hunger < 30) sendPushNotif(s.name + ' acıktı! 🥕', s.name + ' seni bekliyor, hemen besle!');
+    if (s.happy < 30)  sendPushNotif(s.name + ' mutsuz! 🤍', s.name + ' biraz sevgi bekliyor...');
+    if (s.energy < 20) sendPushNotif(s.name + ' yoruldu! 😴', s.name + ' enerji dolu değil, uyut biraz.');
   });
 }
 
-// Her 2 saatte bir bildirim kontrolü
+// Her 2 saatte bir kontrol
 setInterval(checkBunnyNotifs, 2 * 60 * 60 * 1000);
 
 // ── MİNİ OYUN ──
