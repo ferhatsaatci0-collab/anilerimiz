@@ -1207,10 +1207,10 @@ ON CONFLICT DO NOTHING;</textarea>
           <div class="stat-row"><span class="stat-label">Mutluluk</span><div class="bar-bg"><div class="bar-fill" id="happy-f" style="background:#c87ca0;width:100%"></div></div><span class="stat-val" id="happy-val-f">100%</span></div>
           <div class="stat-row"><span class="stat-label">Enerji</span><div class="bar-bg"><div class="bar-fill" id="energy-f" style="background:#7aab7a;width:100%"></div></div><span class="stat-val" id="energy-val-f">100%</span></div>
           <div class="btn-row">
-            <button class="act-btn" onclick="feedBunny('f')">🥕 Besle</button>
-            <button class="act-btn" onclick="petBunny('f')">🤍 Sev</button>
-            <button class="act-btn" onclick="playBunny('f')">🎾 Oyna</button>
-            <button class="act-btn" onclick="openMiniGame('f')">🎮 Mini Oyun</button>
+            <button class="act-btn" id="btn-feed-f" onclick="feedBunny('f')">🥕 Besle (5)</button>
+            <button class="act-btn" id="btn-pet-f" onclick="petBunny('f')">🤍 Sev (8)</button>
+            <button class="act-btn" id="btn-play-f" onclick="playBunny('f')">🎾 Oyna (3)</button>
+            <button class="act-btn" id="btn-mg-f" onclick="openMiniGame('f')">🎮 Mini Oyun (2)</button>
             <button class="act-btn" onclick="bunniesHug()">🤗 Sarıl</button>
             <button class="act-btn" onclick="sleepBunny('f')">😴 Uyut</button>
           </div>
@@ -1235,10 +1235,10 @@ ON CONFLICT DO NOTHING;</textarea>
           <div class="stat-row"><span class="stat-label">Mutluluk</span><div class="bar-bg"><div class="bar-fill" id="happy-t" style="background:#c87ca0;width:100%"></div></div><span class="stat-val" id="happy-val-t">100%</span></div>
           <div class="stat-row"><span class="stat-label">Enerji</span><div class="bar-bg"><div class="bar-fill" id="energy-t" style="background:#7aab7a;width:100%"></div></div><span class="stat-val" id="energy-val-t">100%</span></div>
           <div class="btn-row">
-            <button class="act-btn" onclick="feedBunny('t')">🥕 Besle</button>
-            <button class="act-btn" onclick="petBunny('t')">🤍 Sev</button>
-            <button class="act-btn" onclick="playBunny('t')">🎾 Oyna</button>
-            <button class="act-btn" onclick="openMiniGame('t')">🎮 Mini Oyun</button>
+            <button class="act-btn" id="btn-feed-t" onclick="feedBunny('t')">🥕 Besle (5)</button>
+            <button class="act-btn" id="btn-pet-t" onclick="petBunny('t')">🤍 Sev (8)</button>
+            <button class="act-btn" id="btn-play-t" onclick="playBunny('t')">🎾 Oyna (3)</button>
+            <button class="act-btn" id="btn-mg-t" onclick="openMiniGame('t')">🎮 Mini Oyun (2)</button>
             <button class="act-btn" onclick="bunniesHug()">🤗 Sarıl</button>
             <button class="act-btn" onclick="sleepBunny('t')">😴 Uyut</button>
           </div>
@@ -1531,7 +1531,7 @@ function stopChatPoll() {
 }
 
 // ── BUNNY GAME ──
-const BUNNY_KEY = 'husnu_asiye_v3';
+const BUNNY_KEY = 'husnu_asiye_v4';
 
 const LEVEL_THRESHOLDS = [0,100,250,500,900,1400,2000,2700,3500,4400,5500];
 const BADGES = {
@@ -1544,6 +1544,65 @@ const BADGES = {
   level5:   { emoji:'🏆', label:'5. seviye' },
   hug10:    { emoji:'🤗', label:'10 kez sarıldı' },
 };
+
+const DAILY_LIMITS = { feed:5, pet:8, play:3, minigame:2, hug:2 };
+const DAILY_KEY = 'bunny_daily_limits';
+
+function getTodayLimits() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(DAILY_KEY) || 'null');
+    if (raw && raw.date === todayStr()) return raw;
+  } catch(e) {}
+  return resetDailyLimits();
+}
+
+function resetDailyLimits() {
+  const limits = {
+    date: todayStr(),
+    feed: DAILY_LIMITS.feed,
+    pet: DAILY_LIMITS.pet,
+    play: DAILY_LIMITS.play,
+    minigame: DAILY_LIMITS.minigame,
+    hug: DAILY_LIMITS.hug
+  };
+  localStorage.setItem(DAILY_KEY, JSON.stringify(limits));
+  return limits;
+}
+
+function saveLimits(limits) {
+  localStorage.setItem(DAILY_KEY, JSON.stringify(limits));
+}
+
+function useLimit(action) {
+  const limits = getTodayLimits();
+  if (limits[action] <= 0) return false;
+  limits[action]--;
+  saveLimits(limits);
+  updateLimitBtns();
+  return true;
+}
+
+function updateLimitBtns() {
+  const limits = getTodayLimits();
+  const actions = [
+    { key:'feed', ids:['btn-feed-f','btn-feed-t'], label:'🥕 Besle' },
+    { key:'pet',  ids:['btn-pet-f','btn-pet-t'],   label:'🤍 Sev' },
+    { key:'play', ids:['btn-play-f','btn-play-t'],  label:'🎾 Oyna' },
+    { key:'minigame', ids:['btn-mg-f','btn-mg-t'],  label:'🎮 Mini Oyun' },
+    { key:'hug',  ids:['btn-hug-f','btn-hug-t'],   label:'🤗 Sarıl' },
+  ];
+  actions.forEach(a => {
+    a.ids.forEach(id => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      const left = limits[a.key];
+      btn.textContent = a.label + ' (' + left + ')';
+      btn.disabled = left <= 0;
+      btn.style.opacity = left <= 0 ? '0.4' : '1';
+      btn.style.cursor = left <= 0 ? 'not-allowed' : 'pointer';
+    });
+  });
+}
 
 function defaultBunny(name) {
   return { name, hunger:100, happy:100, energy:100, streak:0, lastVisit:null,
@@ -1799,6 +1858,7 @@ function renderBunnies() {
     checkAllBadges(p);
   });
   saveBunnies(bunnies);
+  updateLimitBtns();
 }
 
 function gameLog(msg) {
@@ -1809,6 +1869,7 @@ function gameLog(msg) {
 function feedBunny(p) {
   const s = bunnies[p];
   if (s.sleeping) { gameLog(s.name + ' uyuyor, uyandırmayalım 😴'); return; }
+  if (!useLimit('feed')) { gameLog('Bugünlük besleme hakkın bitti! Yarın yenilenir 🥕'); return; }
   checkBunnyStreak(p);
   s.hunger = Math.min(100, s.hunger + 30);
   s.energy = Math.min(100, s.energy + 10);
@@ -1824,6 +1885,7 @@ function feedBunny(p) {
 function petBunny(p) {
   const s = bunnies[p];
   if (s.sleeping) { s.sleeping = false; gameLog(s.name + ' uyandı! 😊'); renderBunnies(); return; }
+  if (!useLimit('pet')) { gameLog('Bugünlük sevme hakkın bitti! Yarın yenilenir 🤍'); return; }
   checkBunnyStreak(p);
   s.happy = Math.min(100, s.happy + 25);
   s.petCount++;
@@ -1843,6 +1905,7 @@ function playBunny(p) {
   if (s.sleeping) { gameLog(s.name + ' uyuyor!'); return; }
   if (s.energy < 15) { gameLog(s.name + ' çok yorgun, önce besle! 😴'); return; }
   if (s.hunger < 20) { gameLog(s.name + ' çok aç, önce besle! 🥕'); return; }
+  if (!useLimit('play')) { gameLog('Bugünlük oynama hakkın bitti! Yarın yenilenir 🎾'); return; }
   checkBunnyStreak(p);
   s.happy  = Math.min(100, s.happy + 20);
   s.energy = Math.max(0, s.energy - 25);
@@ -1874,6 +1937,7 @@ function sleepBunny(p) {
 }
 
 function bunniesHug() {
+  if (!useLimit('hug')) { gameLog('Bugünlük sarılma hakkı bitti! Yarın yenilenir 🤗'); return; }
   bunnies.f.hugCount++;
   bunnies.t.hugCount++;
   bunnies.f.happy = Math.min(100, bunnies.f.happy + 15);
@@ -1891,6 +1955,34 @@ function bunniesHug() {
   renderBunnies();
 }
 
+
+// ── BİLDİRİMLER ──
+function requestNotifPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+function sendNotif(title, body) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'granted') {
+    new Notification(title, { body, icon: 'https://ferhatsaatci0-collab.github.io/anilerimiz/favicon.ico' });
+  }
+}
+
+function checkBunnyNotifs() {
+  ['f','t'].forEach(p => {
+    const s = bunnies[p];
+    if (s.hunger < 30) sendNotif(s.name + ' acıktı! 🥕', s.name + ' seni bekliyor, hemen besle!');
+    if (s.happy < 30)  sendNotif(s.name + ' mutsuz! 🤍', s.name + ' biraz sevgi bekliyor...');
+    if (s.energy < 20) sendNotif(s.name + ' yoruldu! 😴', s.name + ' enerji dolu değil, uyut biraz.');
+  });
+}
+
+// Her 2 saatte bir bildirim kontrolü
+setInterval(checkBunnyNotifs, 2 * 60 * 60 * 1000);
+
 // ── MİNİ OYUN ──
 let mgInterval = null;
 let mgScore = 0;
@@ -1898,6 +1990,7 @@ let mgTime = 15;
 let mgPlayer = null;
 
 function openMiniGame(p) {
+  if (!useLimit('minigame')) { gameLog('Bugünlük mini oyun hakkın bitti! Yarın yenilenir 🎮'); return; }
   mgPlayer = p;
   mgScore = 0;
   mgTime = 15;
